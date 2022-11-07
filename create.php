@@ -22,7 +22,7 @@ header("Access-Control-Allow-Headers: Content-Type");
      $author = mysqli_real_escape_string($_conn, trim($author));
      $category = mysqli_real_escape_string($_conn, trim($category)); 
   
-     $query = "INSERT INTO `blogs`(`title`, `content`, `author`, `category`, `date`)VALUES('$title', '$content', '$author', '$category', Now())";
+     $query = "INSERT INTO `blogs`(`title`, `content`, `author`, `category`, `date_published`)VALUES('$title', '$content', '$author', '$category', Now())";
      $result = mysqli_query($_conn, $query);
      if($result){
          echo json_encode([

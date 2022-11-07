@@ -12,15 +12,15 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     require_once 'db.php';
     $table_name = "blogs";
     //set id of article  to be edited
-    $id = $data->id;
+    $blogs_id = $data->blogs_id;
     $title = $data->title;
     $content = $data->content;
     //$author = $author->author;
-    $category = $category->category;
+    $category = $data->category;
     //update query
     
-    $query = "UPDATE `blogs` SET `title`= '{$title}',  `content` = '{$content}', `category` = '{$category}' WHERE `id` = {$id} LIMIT 1";
-    $result = mysqli_query($_conn, $query);
+    $query = "UPDATE `blogs` SET `title`= '{$title}',  `content` = '{$content}', `category` = '{$category}' WHERE `blogs_id` = '{$blogs_id}' LIMIT 1";
+    $result =ysqli_query($_conn, $query);
     if($result){
         echo json_encode([
                 "message" => "updated successfully",

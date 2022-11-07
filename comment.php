@@ -8,31 +8,36 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $data = JSON_decode($data);
     $name = $data->name;
     $email = $data->email;
-    $comment = $data->comment;
+    $content = $data->content;
+    $category = $data->category;
     // connect to database
     require_once "db.php";
-    require_once "read.php";
     //escape any attack via CORS
     $name = htmlspecialchars(strip_tags($name));
     $email = htmlspecialchars(strip_tags($email));
-    $comment = htmlspecialchars(strip_tags($comment));
+    $content = htmlspecialchars(strip_tags($content));
+    $category = htmlspecialchars(strip_tags($category));
     //sanitize
     $name = mysqli_real_escape_string($_conn, trim($name));
     $email = mysqli_real_escape_string($_conn, trim($email));
-    $comment = mysqli_real_escape_string($_conn, trim($comment));
-    include_once "read.php";
-    $table_name = "blogs";
-    //add mysql query
-    $query = "INSERT INTO `comments`(`name`, `email`, `comment`, `date`) VALUES ('$name', '$email', '$comment', Now())";
+    $content = mysqli_real_escape_string($_conn, trim($content));
+    $category = mysqli_real_escape_string($_conn, trim($category));
+    //include_once "read.php";
+    $table_name = "comments";
+    //add mysql query 
+    $query = "INSERT INTO `comments` ( `content`, `name`, `email`, `category`, `date_commented`) VALUES ('$content','$name','$email','$category',Now())";
     $result = mysqli_query($_conn, $query);
     if($result){
+        $query = "SELECT b.title, b.content, b.author, b.category, c.name, c.email, c.content FROM blogs b JOIN comments c ON b.category = c.category";
+        $result = mysqli_query($_conn, $query);
        echo json_encode([
             "message"=>"you successfully entered a comment",
             "code"=>"success",
             "data"=>[
                 "name"=>$name,
                 "email"=>$email,
-                "comment"=>$comment
+                "content"=>$content,
+                "category"=>$category
             ],
         ]);
     }else{
